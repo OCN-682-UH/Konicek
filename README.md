@@ -9,7 +9,7 @@ Here, look at [this.](https://www.buttercupisaverygoodgirl.com/about-buttercup) 
 
 use of markdown at [work][a link]
 
-My _best_ friend and I are counting down the days until we can see a great instant classic. ![An instant classic][a classic]
+In many ways, I am very excited to take on this new responsibility. With great knowledge comes great power, and with great power comes great responsibility. ![An instant classic][a classic]
 
 
 Finally, quotes to help keep life in perspective as I work through this repository and my doctorate degree: 
@@ -19,7 +19,7 @@ Finally, quotes to help keep life in perspective as I work through this reposito
 >"So I said, ‘Let me ask you a question, and [the guy who makes boats in South Carolina] said, ‘Nobody ever asked this question,’ and it must be because of MIT, my relationship to MIT —very smart. He goes, I say, ‘What would happen if the boat sank from its weight? And you’re in the boat and you have this tremendously powerful battery and the battery is now underwater and there’s a shark that’s approximately 10 yards over there?"
 > - Donald Trump
 
-[a classic]: https://shrek.fandom.com/wiki/Ogre?file=OgreConcept1.jpg
+[a classic]: https://www.metrowestdailynews.com/gcdn/authoring/2010/05/20/NMWD/ghows-WL-0a558af3-4f17-496f-975d-2e41cddb4945-35b4910a.jpeg
 
 
 [a link]:www.scholar.google.com
