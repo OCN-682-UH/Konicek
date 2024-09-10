@@ -1,11 +1,11 @@
-# Big Konicek
+# Read about Konicek
 ### Hello. I have _truly_ learned some **beautiful** new tactics to **_communicate_**.
 
 This will enable me to code _responsibily._ 
 
 Here, look at [this.](https://www.buttercupisaverygoodgirl.com/about-buttercup) This is 
 
-# **_responsible_** 
+## **_responsible_** 
 
 use of markdown at [work][a link]
 
