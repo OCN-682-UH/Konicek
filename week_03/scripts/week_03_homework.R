@@ -38,7 +38,7 @@ penguins1<- na.omit(penguins)
 #make a plot
 ggplot(data=penguins1, mapping=aes(x = body_mass_g, 
                       y = species,)) +               
- geom_density_ridges(scale = 1,
+ geom_density_ridges(scale = .9,
     aes(point_color = sex, point_fill = sex, point_shape = sex),
     alpha = .7, point_alpha = .5, jittered_points = TRUE
   ) +                                                 # create density curves to show distribution of penguin weights. Maybe a histogram would be better?
@@ -49,7 +49,7 @@ ggplot(data=penguins1, mapping=aes(x = body_mass_g,
        x= "Body Weight (kg)",
        y= "Species",
        caption = "Source: Palmer station") +
-  theme_fivethirtyeight()
+  theme_bw()
 
 #red text:"picking joint bandwidth of 116" 
 
