@@ -135,3 +135,88 @@ penguins %>%
 #YOU GOTTA SWITCH FROM THE PIPE TO THE + WHEN YOU USE GGPLOT
 
 #HOMEWORK write a script that's on the 4A
+
+
+### 4B NOTES ####
+
+###working with tidyr homework 4B: Silbiger et al. biochem data from Hawaii ####
+### created by kelli #########
+### last edit 9/24/2024 ########
+
+### load libaries ####
+library(tidyverse)
+library(here)
+library(ggplot2)
+
+### Load data ######
+chemdata <- read_csv(here("week_04", "data", "chemicaldata_maunalua.csv"))
+view(chemdata)
+
+
+### Clean data ####
+clean <- chemdata %>%
+  filter(complete.cases(.)) %>% #filters out everything that's not complete
+  separate(col = Tide_time, #old column
+           into = c("Tide","Time"), #new columns
+           sep = "_") #separate old column by this symbol 
+view(clean) #looks good 
+
+#can set "remove = FALSE" to keep the separate column 
+
+#UNITE 
+#brings two columns together 
+
+clean <- chemdata %>%
+  filter(complete.cases(.)) %>% #filters out everything that's not complete
+  separate(col = Tide_time, #old column
+           into = c("Tide","Time"), #new columns
+           sep = "_") %>% #separate old column by this symbol
+  unite(col = "Site_Zone", #NEW column
+        c(Site,Zone), #existing columns to unite
+        sep = ".", #separating symbol 
+        remove = FALSE) #DO NOT delete the original columns 
+
+#PIVOT DATA FROM WIDE TO LONG STYLE 
+
+#easier to summarize with group_by() and facet_wrap()-- can do these as a function of the variable
+
+#pivot_longer()
+
+long <- clean %>%
+  pivot_longer(cols = Temp_in:percent_sgd, #columns you want to pivot
+               names_to = "Variables", #names of new columns with all the variables
+               values_to = "Values") #name of the new column with all the values
+long %>%
+  group_by(Variables, Site) %>% #group by everything we want 
+  summarise(Param_means = mean(Values, na.rm = TRUE), #get mean
+            Param_vars = var(Values, na.rm = TRUE))
+view(long)
+
+#THE CHALLENGE 
+
+summary <- long %>%
+  group_by(Variables, Site_Zone, Tide) %>%
+  summarise(Param_means= mean(Values, na.rm = TRUE), #get mean
+            Param_vars = var(Values, na.rm = TRUE),
+            Param_sd = sd(Values, na.rm = TRUE))
+
+### facet_wrap with long data- fix the y axis to let scale be free
+
+long %>%
+  ggplot(aes(x = Site, y = Values))+
+  geom_boxplot()+
+  facet_wrap(~Variables, scales = "free")
+
+#if you want to scale the x, scales = "free_x" or "free_y" to do y only 
+
+###LONG TO WIDE ####
+
+#instead of names_to, we go names_from 
+
+wide <- summary %>%
+  pivot_wider(names_from = Variables, #column with names for new column 
+              values_from = Param_means:Param_sd) #column with the values
+
+### SUMMARY STATS AND CSV FILE ####
+
+write_csv("week_04", "output","data","summary.csv")

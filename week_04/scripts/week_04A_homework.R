@@ -39,6 +39,6 @@ ggplot(data=task2,
 
 
 
-ggsave(here("week_04" , "outputs", "4A_homework.png"), width = 7, height = 5)
+ggsave(here("week_04" , "outputs", "plots", "4A_homework.png"), width = 7, height = 5)
 
 
