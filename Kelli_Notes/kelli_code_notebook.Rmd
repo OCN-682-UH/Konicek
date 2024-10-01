@@ -1,0 +1,886 @@
+Title: Kelli's Notes for OCN 683
+
+###3A: GGPLOT ################
+Kelli Konicek 
+created on 2024-09-10
+
+#libraries
+```{r}
+library(tidyverse)
+library(here)
+library(palmerpenguins)
+library(ggplot2)
+library(beyonce)
+library(ggthemes)
+```
+
+
+
+LOOK AT YOUR DATA
+```{r}
+view(penguins)
+head(penguins)
+tail(penguins)
+glimpse(penguins) #ways to take a look at your dataset 
+```
+
+
+
+#make a plot
+
+```{r}
+ggplot(data=penguins) #I know what dataset I'm using but I'm not telling you what to do 
+```
+
+make aesthetics- anything that determines how the thing looks based on the data set
+
+```{r}
+ggplot(data=penguins, mapping= aes(x= bill_depth_mm,
+y= bill_length_mm,
+color = species, #colors the points by the actual raw data of that column
+shape = island,
+size = body_mass_g,
+alpha = flipper_length_mm)) +  #alpha changes the density of points
+  geom_point() + # plus adds a new function, comma add
+  labs(title="Bill depth and length",
+       subtitle="Big Bills and Deep Bills for cold ducks",
+       x= "Bills Deep (mm)",
+       y= "Bills Big (mm)",
+       color = "Names of Cold Ducks",
+       caption = "Source: Palmer station or citation here") + scale_color_viridis_d()
+```
+
+#mapping v setting 
+settings are things that are not based ont the values. put settings in the geom_point () layer
+
+
+```{r}
+ggplot(data=penguins, mapping= aes(x= bill_depth_mm,
+                                   y= bill_length_mm,
+                                   color = species, #colors the points by the actual raw data of that column,
+                                   shape = island,
+                                   size = body_mass_g,
+                                   alpha = flipper_length_mm)) +  #alpha changes the density of points
+  geom_point(size=2) + # plus adds a new function, comma add
+  labs(title="Bill depth and length",
+       subtitle="Big Bills and Deep Bills for cold ducks",
+       x= "Bills Deep (mm)",
+       y= "Bills Big (mm)",
+       color = "Names of Cold Ducks",
+       caption = "Source: Palmer station or citation here") + scale_color_viridis_d()
+```
+
+#faceting
+useful for exploring conditional relationships in large data sets 
+
+###FACET GRID
+
+```{r}
+ggplot(data=penguins, mapping= aes(x= bill_depth_mm,
+                                   y= bill_length_mm))+
+         geom_point() +
+         facet_grid(species~sex) #EACH ROW AS A FUNCTION OF COLUMNS
+```
+
+
+###FACET WRAP
+
+#get rid of a legend 
+#give more columns to facet
+```{r}
+ggplot(data=penguins, mapping= aes(x= bill_depth_mm,
+                                   y= bill_length_mm))+
+  geom_point() +
+  facet_wrap(~species) 
+
+# 1D ribbon: YOU determine the dimensions with facet wrap- tilda can make it organized by COLUMNS like this or species~ to make ROWS
+
+ggplot(data=penguins, mapping= aes(x= bill_depth_mm,
+                                   y= bill_length_mm,
+                                   color= species,
+                                   guides(color= FALSE)))+ #GET RID OF THAT LEGEND
+  geom_point() +
+  facet_wrap(~species, ncol=2) #gives more control with the wrap! 
+```
+
+
+###3B:MORE GGPLOT#######
+
+#geom smooth for regressions
+```{r}
+ggplot(data=penguins,
+       mapping = aes(x = bill_depth_mm,
+                     y = bill_length_mm))+
+  geom_point()+
+  geom_smooth(method="lm", se= FALSE)+ #best way to plot regressions! Whahoo! You can remove the standard error with se=FALSE
+  labs(x = "Bill depth (mm)",
+       y = "Bill length (mm)")
+```
+
+
+
+
+
+
+#GROUP BY A COLUMN IN AES
+```{r}
+ggplot(data=penguins,
+       mapping = aes(x = bill_depth_mm,
+                     y = bill_length_mm,
+                     group = species, #GROUP BY SPECIES OR ANOTHER COLUMN WHOO HOO!
+                     color = species))+
+  geom_point()+
+  geom_smooth(method="lm")+ 
+  labs(x = "Bill depth (mm)",
+       y = "Bill length (mm)")
+
+```
+
+
+#SCALES
+
+```{r}
+ggplot(data=penguins,
+       mapping = aes(x = bill_depth_mm,
+                     y = bill_length_mm,
+                     group = species, 
+                     color = species))+
+  geom_point()+
+  geom_smooth(method="lm")+ 
+  labs(x = "Bill depth (mm)",
+       y = "Bill length (mm)")+
+  scale_x_continuous(limits = c(12,20))+ #make a limit for the scales! 
+  scale_y_continuous(limits = c(30, 50))
+```
+
+
+
+
+#BREAKS and relabling breaks 
+```{r}
+
+ggplot(data=penguins,
+       mapping = aes(x = bill_depth_mm,
+                     y = bill_length_mm,
+                     group = species, 
+                     color = species))+
+  geom_point()+
+  geom_smooth(method="lm")+ 
+  labs(x = "Bill depth (mm)",
+       y = "Bill length (mm)")+
+  scale_x_continuous(breaks = c(14,17,21),
+                     labels = c("low", "medium", "high")) 
+  scale_y_continuous(limits = c(30, 50))
+
+```
+
+
+#MANUALLY CHANGE COLOR
+```{r}
+  
+  ggplot(data=penguins,
+         mapping = aes(x = bill_depth_mm,
+                       y = bill_length_mm,
+                       group = species, 
+                       color = species))+
+    geom_point()+
+    geom_smooth(method="lm")+ 
+    labs(x = "Bill depth (mm)",
+         y = "Bill length (mm)")+
+  scale_x_continuous(breaks = c(14,17,21),
+                       labels = c("low", "medium", "high"))+ 
+  scale_y_continuous(limits = c(30, 50))+
+  scale_color_manual(values = c("orange","blue","black"))
+```
+
+
+#COLOR PALLETS from github
+
+instead of using install.packages, use install_github(USERNAME,PACKAGE NAME)
+
+
+```{r}
+ggplot(data=penguins,
+         mapping = aes(x = bill_depth_mm,
+                       y = bill_length_mm,
+                       group = species, 
+                       color = species))+
+    geom_point()+
+    geom_smooth(method="lm")+ 
+    labs(x = "Bill depth (mm)",
+         y = "Bill length (mm)")+
+    scale_x_continuous(breaks = c(14,17,21),
+                       labels = c("low", "medium", "high"))+ 
+    scale_y_continuous(limits = c(30, 50))+
+    scale_color_manual(values = beyonce_palette(2)) #now you can use the pallette in the place of manual colors!
+```
+
+
+
+
+#COORDINATES
+#default coordinates for ggplot are cartesian (x,y)
+#coord_flip() 
+```{r}
+  ggplot(data=penguins,
+         mapping = aes(x = bill_depth_mm,
+                       y = bill_length_mm,
+                       group = species, 
+                       color = species))+
+    geom_point()+
+    geom_smooth(method="lm")+ 
+    labs(x = "Bill depth (mm)",
+         y = "Bill length (mm)")+
+    scale_x_continuous(breaks = c(14,17,21),
+                       labels = c("low", "medium", "high"))+ 
+    scale_y_continuous(limits = c(30, 50))+
+    scale_color_manual(values = c("orange","blue","black"))+
+    coord_flip()
+```
+
+
+  
+#coord_fixed() 
+flip the aspect ratio 
+```{r}
+  ggplot(data=penguins,
+         mapping = aes(x = bill_depth_mm,
+                       y = bill_length_mm,
+                       group = species, 
+                       color = species))+
+    geom_point()+
+    geom_smooth(method="lm")+ 
+    labs(x = "Bill depth (mm)",
+         y = "Bill length (mm)")+
+    scale_x_continuous(breaks = c(14,17,21),
+                       labels = c("low", "medium", "high"))+ 
+    scale_y_continuous(limits = c(30, 50))+
+    scale_color_manual(values = c("orange","blue","black"))+
+    coord_fixed()
+```
+
+
+#transform x and y axis 
+want to keep the data in its natural scale, but wanna log the visual itself 
+  
+#coord_trans
+coord_trans(x = "log10", y = "log10") 
+
+make the space log times scale. cool! lots of transformations
+  
+#make coordinates polar 
+  #turn x axis into polar coordinates 
+  #coord_polar("x")
+  
+#THEME
+composed of four main elements:non data elements you can control
+#element_text
+  can set the font size and stuff 
+#theme() 
+allows you to override all the default
+complete themes can also be done like theme_gray
+ 
+#axis.title, panel.background
+```{r}
+  ggplot(data=penguins,
+         mapping = aes(x = bill_depth_mm,
+                       y = bill_length_mm,
+                       group = species, 
+                       color = species))+
+    geom_point()+
+    geom_smooth(method="lm")+ 
+    labs(x = "Bill depth (mm)",
+         y = "Bill length (mm)")+
+    scale_x_continuous(breaks = c(14,17,21),
+                       labels = c("low", "medium", "high"))+ 
+    scale_y_continuous(limits = c(30, 50))+
+    scale_color_manual(values = c("orange","blue","black"))+
+    theme_bw()+
+    theme(axis.title = element_text(size = 20,
+                                    color = "blue"),
+          panel.background = element_rect(fill = "linen")) #fill changes the inside, color just changes the outside
+```
+ 
+
+#SAVE THE PLOT: GGSAVE
+```{r}
+ggsave(here("week_03" , "outputs", "penguins.png"), width = 7, height = 5)
+```
+
+  
+
+
+#OTHER GGPLOT EXTENSIONS
+GGPUBR- ggplot extension that makes it publicaion 
+
+
+
+
+#4A: DPLYR ###############
+
+
+#FILTER
+
+```{r}
+library(palmerpenguins)
+library(tidyverse)
+library(dplyr)
+```
+
+```{r}
+filter(.data = penguins, sex == "female") 
+```
+
+filter(df, type == "otter" & site == "bay")
+if the answer is yes, it keeps it-- look at page 8 of Week 4A
+== means exactly equal to
+asking very explicit 
+
+#list of logical expressions: 
+x<y less than 
+x%in% y (give it two options-- is it within-- in group membership)
+is.na(x) only keep NAs
+!is.na(x) do NOT keep NAs
+x>y greater than
+== exactly equal
+x <= y less than or equal to 
+x >= y greater than or equal to 
+x != y not equal to 
+
+
+Choose penguins measured in 2008
+```{r}
+glimpse (penguins)
+filter(.data = penguins, year == "2008")
+```
+
+
+
+Choose penguins with body mass greater than 5000
+```{r}
+filter(.data = penguins, body_mass_g > 5000)
+```
+
+
+#when do I use quotes? 
+If you want to find an exact value or have a character, use quotes. Numbers don't need quotes. Treat things you want EXACTLY like a character.
+
+you can add in multiple layers of things separating by commas 
+```{r}
+filter(.data = penguins, sex == "female", body_mass_g > 5000)
+```
+
+
+###BOOLEAN OPERATORS
+
+a & b is a AND b
+a | b is a OR b 
+!a is NOT A 
+
+default for filter is &, but you can use comma for it 
+
+```{r}
+filter(.data = penguins, year == "2008" | year == "2009")
+```
+
+
+in group membership (%in%), not(!)
+```{r}
+filter(.data = penguins, year %in% c("2008", "2009"))
+
+filter(.data = penguins, island != "Dream")
+
+filter(.data = penguins, species %in% c("Adelie", "Gentoo"))
+```
+
+penguins between 3000 and 5000 g
+```{r}
+filter(.data = penguins,
+       body_mass_g <5000,
+       body_mass_g > 3000)
+```
+
+
+
+
+### MUTATE
+
+add a new column converting body mass in g to kg and save the new dataframe
+
+```{r}
+data2<-mutate(.data= penguins,
+              body_mass_kg = body_mass_g/1000,
+              bill_length_depth = bill_length_mm/bill_depth_mm)
+```
+
+
+
+#add multiple new columns 
+
+mutate multiple columns at the same time
+
+mutate_if(), mutate_at()-- the columns that I tell you, do the same to them, this is good if you have a bunch of columns if you want to do the same thing to them 
+
+mutate_all-- examples on the 4a slide 
+
+#IFELSE()
+
+if this is true, give it whatever value you want, if it is false, give whatever value you want
+
+add new columns based of ddata you already have 
+
+#case_when
+ask it for multiple ifelse stuffs -- ifelse is for two things
+
+
+```{r}
+data2 <- mutate(.data = penguins,
+                after_2008 = ifelse(year > 2008, "After 2008", "Before 2008"))
+
+data2<-mutate(.data= penguins,
+              flipper_plus_body = flipper_length_mm + body_mass_g +
+                BIGBOYS = ifelse(body_mass_g > 4000, "BIG BOY", "SMALL BOY")) 
+```
+
+      
+
+### THE PIPE
+
+says "and then do" verb 1 and do verb 2 
+
+|>this is also called a NATIVE pipe  magritter pipe needs tidyverse
+
+using the pipe means you don't need the .data 
+
+data3 <- penguins %>%
+  filter(sex=="female") %>%
+  mutate(log_mass = log(body_mass_g))
+
+### SELECT
+
+#select columns
+```{r}
+data4 <- penguins %>%
+  filter (sex == "female") %>%
+  mutate(log_mass = log(body_mass_g) %>%
+           select(species, island, sex, log_mass))
+```
+
+
+#RENAME
+can use select to RENAME columns, can do it within the select function 
+NEW FIRST, THEN OLD 
+
+
+#SUMMARIZE
+have less rows because you are summarizing by a variable you're interested in
+
+want to calculate mean for flipper length 
+```{r}
+data4 <- penguins %>% 
+  summarize(mean_flipper = mean(flipper_length_mm, na.rm = TRUE))
+```
+
+
+you can add mulitple different things to this 
+can do summarizeat, summarizeif, summarizeall 
+
+#GROUPBY
+almost always associated with summarize 
+
+
+```{r}
+data5 <- penguins %>% 
+  group_by(island) %>% 
+  summarize(mean_bill_length = mean(bill_length_mm, na.rm = TRUE))
+
+data5 <- penguins %>% 
+  group_by(island, sex) %>% 
+  summarize(mean_bill_length = mean(bill_length_mm, na.rm = TRUE))
+
+```
+
+
+#REMOVE NAS
+
+only drop missing data from the column you want
+
+```{r}
+penguins %>% 
+  drop_na(sex) %>%
+  group_by(island, sex) %>% 
+  summarize(mean_bill_length = mean(bill_length_mm, na.rm = TRUE))
+```
+
+
+
+#PIPE TO A GGPLOT
+you can clean up all your data and pipe it straight ot GGplot 
+
+YOU GOTTA SWITCH FROM THE PIPE TO THE + WHEN YOU USE GGPLOT
+
+
+### 4B: TIDYR ###############
+
+#working with tidyr homework 4B: Silbiger et al. biochem data from Hawaii 
+#created by kelli 
+# last edit 9/24/2024 
+
+#load libaries
+
+```{r}
+library(tidyverse)
+library(here)
+library(ggplot2)
+```
+
+
+#Load data
+
+```{r}
+chemdata <- read_csv(here("week_04", "data", "chemicaldata_maunalua.csv"))
+view(chemdata)
+```
+
+
+# Clean data: filter, separate
+```{r}
+clean <- chemdata %>%
+  filter(complete.cases(.)) %>% #filters out everything that's not complete
+  separate(col = Tide_time, #old column
+           into = c("Tide","Time"), #new columns
+           sep = "_") #separate old column by this symbol 
+view(clean) #looks good 
+```
+can set "remove = FALSE" to keep the separate column 
+
+#UNITE : brings two columns together 
+
+```{r}
+clean <- chemdata %>%
+  filter(complete.cases(.)) %>% #filters out everything that's not complete
+  separate(col = Tide_time, #old column
+           into = c("Tide","Time"), #new columns
+           sep = "_") %>% #separate old column by this symbol
+  unite(col = "Site_Zone", #NEW column
+        c(Site,Zone), #existing columns to unite
+        sep = ".", #separating symbol 
+        remove = FALSE) #DO NOT delete the original columns 
+```
+
+
+#PIVOT DATA: WIDE TO LONG 
+easier to summarize with group_by() and facet_wrap()-- can do these as a function of the variable
+
+#pivot_longer()
+
+```{r}
+long <- clean %>%
+  pivot_longer(cols = Temp_in:percent_sgd, #columns you want to pivot
+               names_to = "Variables", #names of new columns with all the variables
+               values_to = "Values") #name of the new column with all the values
+long %>%
+  group_by(Variables, Site) %>% #group by everything we want 
+  summarise(Param_means = mean(Values, na.rm = TRUE), #get mean
+            Param_vars = var(Values, na.rm = TRUE))
+view(long)
+```
+
+
+THE CHALLENGE 
+```{r}
+summary <- long %>%
+  group_by(Variables, Site_Zone, Tide) %>%
+  summarise(Param_means= mean(Values, na.rm = TRUE), #get mean
+            Param_vars = var(Values, na.rm = TRUE),
+            Param_sd = sd(Values, na.rm = TRUE))
+```
+
+
+#facet_wrap with long data
+fix the y axis to let scale be free
+
+```{r}
+long %>%
+  ggplot(aes(x = Site, y = Values))+
+  geom_boxplot()+
+  facet_wrap(~Variables, scales = "free")
+```
+
+if you want to scale the x, scales = "free_x" or "free_y" to do y only 
+
+#pivot_wider
+
+instead of names_to, we go names_from 
+
+```{r}
+wide <- summary %>%
+  pivot_wider(names_from = Variables, #column with names for new column 
+              values_from = Param_means:Param_sd) #column with the values
+```
+
+
+#WRITE A CSV FILE
+
+```{r}
+write_csv("week_04", "output","data","summary.csv")
+```
+
+
+
+#### 5A: JOINS##################
+Learning joins (part of the {dplyr} package)
+
+left_join() -- with real data
+Learn to make a tibble
+
+Back to joins (with made up data as examples)
+
+right_join()
+inner_join()
+full_join()
+semi_join()
+anti_join()
+
+
+
+```{r}
+### load libaries ####
+library(tidyverse)
+library(here)
+library(ggplot2)
+
+
+```
+### Load data
+```{r}
+
+sites <- read_csv(here("week_05", "data", "site.characteristics.data.csv"))
+view(sites)
+tpc <-read_csv(here("week_05", "data", "Topt_data.csv"))
+glimpse(tpc)
+```
+
+site letter links these two data sets together. 
+
+tpc is in wide format, sites is in long 
+
+
+```{r}
+sites_wide <- sites %>%
+  pivot_wider(names_from = parameter.measured,
+              values_from = values)
+view(sites_wide)
+```
+
+#put values in alphabetical order by chosen column
+but to put it in order of site letter 
+```{r}
+sites_wide <- sites %>%
+  pivot_wider(names_from = parameter.measured,
+              values_from = values) %>%
+  arrange(site.letter) #arrange data frame by site
+view(sites_wide)
+```
+
+
+
+if you donʻt have any missing values, then all these joins will do the same thing. 
+
+
+###LEFT JOIN
+```{r}
+full_left <- left_join(tpc, sites_wide)
+view(full_left)
+```
+
+left_join(DATA FRAME ON LEFT, DATA FRAME ON RIGHT)
+only retains IDS on the left--- will delete 4 if you use left join 
+order really matters with the joins. 
+
+###RELOCATE
+#look at certain things first or together
+
+helps to clean data, not going to affect analysis 
+
+
+```{r}
+full_left <- full_left <- left_join(tpc, sites_wide) %>%
+  relocate(where(is.numeric), .after = where(is.character))
+view(full_left)
+```
+
+
+
+#CALCULATE MEANS AND VARIANCES OF ALL THE NUMERIC DATA 
+
+My first try: 
+```{r}
+long <- full_left %>%
+  pivot_longer(cols = E:substrate.cover, #columns you want to pivot
+               names_to = "Numeric_Variables", #names of new columns with all the variables
+               values_to = "Values")  #name of the new column with all the values
+long %>%
+  group_by(Numeric_Variables, site.letter) %>% #group by everything we want 
+  summarise(Param_means = mean(Values, na.rm = TRUE), #get mean
+            Param_vars = var(Values, na.rm = TRUE))
+```
+
+#SUMMARISE AT
+```{r}
+full_sum <- full_left %>%
+  group_by(site.letter)
+  summarize_at(vars(E:Tpot, light:substrate.cover),
+               funs(mean = mean, var = var), na.rm = TRUE)
+```
+
+#SUMMARISE ACROSS
+ANOTHER WAY-- find all the numerics, create a list. mean = mean means that you can call your function mean 
+```{r}
+full_mean_var <- full_left %>%
+  group_by(site.letter) %>%
+  summarise(across(where(is.numeric), list(mean = mean, var = var), na.rm = TRUE))
+```
+
+#SUMMARISE IF
+```{r}
+summary <- full_left %>%
+  select(-site.block)%>%
+  group_by(site.letter)%>%
+  summarise_if(is.numeric,
+               funs(mean=mean, var = var),
+               na.rm = TRUE)
+```
+
+
+### DIFFERENT JOINS
+
+creating our own tribble 
+make 1 tibble: 
+
+```{r}
+T1 <- tibble(Site.ID = c("A", "B", "C", "D"),
+Temperature = c(14.1, 15.7, 69, 69.1))
+
+T2 <- tibble(Site.ID = c("A", "B", "C", "D"),
+pH = c(14, 1, 2, 5))
+
+
+```
+
+#INNER JOIN
+inner join--- if youʻre going to remove nas anyway you can use this -- will reatain ph data
+
+#FULL JOIN
+full join--- keeps literally everything, puts NAs in there
+(same as merge but itʻs the tidy version)
+
+#SEMI JOIN-- only going to keep data from first data frame
+keeps all the rows from the first data set but ONLY where there is matching data in the second one--- find all the sites that expect in T2, but I only want to keep the temperature data. 
+
+If I donʻt actually want to join everything-- I donʻt want stuff that doesnʻt have pH data 
+
+#ANTI JOIN (T1, T2)
+saves all the rows in the first data set that donʻt matching anything in the second data set. 
+
+ORDER MATTERS 
+
+
+
+###5B: LUBRIDATE #############
+Lubridate date and time
+
+what time is it now? 
+```{r}
+library(lubridate)
+now()
+now(tzone = "EST")
+now(tzone = "GMT")
+```
+
+just the date: 
+```{r}
+today(tzone = "HST")
+am(now()) #is it morning? helpful to divide data 
+```
+
+Date specifications for lubridate 
+#DATES MUST BE CHARACTER FOR IT TO WORK
+i.e. put quotes around it 
+
+#convert a character string into a date: 
+```{r}
+ymd("2021/02/24")
+```
+
+###GUESSING DATES AND TIME FUNCTIONS-- SINGLE DATES
+convert to proper ISO date time
+year month day hour minute seconds 
+```{r}
+ymd_hms("2021-02-24 10:22:20 PM")
+mdy_hms("02/24/2021 22:22:20")
+mdy_hm("February 24 2021 10:22 PM")
+
+#you have to tell it that every piece is there. i.e. if there are seconds, make sure you include there are seconds 
+```
+
+
+### Extracting specific date or time elements from datetimes
+
+#extract the month from the character string 
+
+```{r}
+#make a character string of dates
+datetimes <- c("02/24/2021 22:22:20",
+               "02/25/2021 11:21:10",
+               "02/26/2021 8:01:52")
+
+datetimes <- mdy_hms(datetimes)
+month(datetimes, label= TRUE, abb = FALSE) #label makes month a FACTOR, abb makes it spell out month by full so that you can make nice clean plots by spelling out the month 
+```
+
+#extract the day or the weekday 
+
+```{r}
+day(datetimes)
+```
+
+#extract the day of the week
+```{r}
+wday(datetimes, label = TRUE, abbr = FALSE)
+```
+
+#extract specific time elements - hour not HourS
+```{r}
+hour(datetimes)
+minute(datetimes)
+second(datetimes)
+```
+
+#change date and times -- HourS not hour
+```{r}
+datetimes + hours(4)
+datetimes + days(2)
+datetimes + minutes(30)
+```
+#Round Date times 
+
+```{r}
+round_date(datetimes, "minute") #round to nearest minute
+```
+
+#round to nearest five (however many) minutes
+```{r}
+round_date(datetimes, "5 mins") #round to nearest FIVE minutes
+```
+
+
+
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
