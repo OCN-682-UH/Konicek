@@ -1,0 +1,60 @@
+---
+title: "penguin practice"
+author: "Big Kel"
+date: "2024-10-06"
+output: 
+  html_document:  
+    toc: TRUE
+    toc_float: TRUE 
+    theme: cosmo
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      fig.path = "../output/") #always show the code, don't show the warnings 
+```
+
+# Intro to penguins
+Today we're gonna learn this here *penguin* data to dun write this here R **MARKDOWN**
+
+# Load libaries 
+
+```{r, message=FALSE, warning=FALSE}
+library(palmerpenguins)
+library(ggplot2)
+library(tidyverse)
+library(here)
+library(kableExtra)
+library(ymlthis)
+```
+
+# Inspect the data 
+```{r}
+glimpse(penguins)
+```
+# Make a *PLOT*
+```{r penguinplop, warning=FALSE, out.width="200%",fig.cap="This is a seminal effort to understand penguin bill ratios and I will acccept my Nobel Prize via the mail thank you"}
+ggplot(data=penguins,
+       mapping = aes(x = bill_depth_mm,
+                     y = bill_length_mm,
+                     color = species))+
+  geom_point()+
+  labs(x = "Bill depth (mm)",
+       y = "Bill length (mm)")
+```
+
+#Make a KABLE TABLE 
+
+```{r kabletable}
+penguins %>%
+  group_by(species) %>%
+  summarise(bill_mean = mean(bill_length_mm, na.rm = TRUE)) %>%
+  kbl() %>%
+  kable_classic_2()%>%
+  row_spec(2, bold = T, color = "white",background = "red") %>%
+  kable_styling(full_width = FALSE)
+```
+

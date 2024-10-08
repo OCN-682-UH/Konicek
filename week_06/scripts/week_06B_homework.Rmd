@@ -1,0 +1,96 @@
+---
+title: "An R Markdown to examine the water chemical composition in a Transition zone at differing tide levels"
+author: "kelli"
+date: "`r Sys.Date()`"
+output: 
+  html_document:  
+    toc: TRUE
+    toc_float: TRUE 
+    theme: cosmo
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE,
+                      fig.path = "../output/")
+```
+
+
+
+# Setup
+
+### Load libaries 
+```{r, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(tidyverse)
+library(here)
+library(kableExtra)
+library(ymlthis)
+```
+
+
+### Load **Data**  
+```{r dataload}
+chemdata <- read_csv(here("week_06", "data", "chemicaldata_maunalua.csv"))
+head(chemdata)
+```
+### Clean this data *up* for a table and a plot. Whee!
+
+Here is how I will do it. 
+
+1. Take out NAs
+2. Separate tide and time column
+3. For the **table**, I will get the mean of the NN and Phosphate levels in the transition zone by the tide and site.
+4. For the **plot**, I will filter so that we only have Nitrogen and Phosphate data from Wailupe.
+
+```{r clean}
+### clean data ####
+clean <- chemdata %>%
+filter(complete.cases(.)) %>% #filters out everything that's not complete
+separate(col = Tide_time, #old column
+                  into = c("Tide","Time"), #new columns
+                  sep = "_")%>%
+  select(c(Site, Zone, Tide, Phosphate, NN)) %>%
+  filter(Zone == "Transition") #only wanna look at the transition zone
+```
+
+
+# Kable Table
+```{r Kable_table}
+### Let's make a table of average levels of Phosphate and Nitrate & Nitrite levels by tide and site ###
+summary <- clean %>% 
+  group_by(Tide, Site) %>%
+  summarise(across(where(is.numeric), list(mean = mean), na.rm = TRUE))
+kable(summary) %>%
+kable_paper("hover", full_width = F)
+```
+Ok. This table? not great. I am having trouble fixing it up the way I want, like grouping the rows and renaming everything. It is currently 11:46 on Tuesday. I have full confidence I will some day see the light but I might not have time before this is due. I fully accept the consequences of my rushed and botched table. Great job Kel. 
+
+<div class="tenor-gif-embed" data-postid="7414352" data-share-method="host" data-aspect-ratio="0.961538" data-width="100%"><a href="https://tenor.com/view/great-job-good-job-awkward-wink-gif-7414352">Great Job Good Job GIF</a>from <a href="https://tenor.com/search/great+job-gifs">Great Job GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+
+
+# PLOT TIME BABY.
+We will only plot data from Wailupe. 
+```{r plot figure,fig.align='center'}
+plot<- clean %>%
+  filter(Site == "W")
+ggplot(data=plot, mapping= aes(x= log(NN),
+                                   y= log(Phosphate),
+                                   color = Tide)) + #colors the points by the actual raw data of that column,
+  geom_point()+
+  geom_smooth(method = "lm")+
+  labs(title="Phosphate, Nitrate and Nitrite levels trend higher at low tide",
+       x= "Log of Nitrate and Nitrite level",
+       y= "Log of Phosphate level",
+       color = "Tide",
+       caption = "Source: N Silbiger et al., 2018") +
+  theme_light()
+``` 
+
+
+
+
+# *Wow.* 
+
+We've done some... some work here today. I will understand if I get points knocked off of this one because both that table and that graph contribute nothing new and beautiful to the world we live in. However, it is but a step on the trail to coding transcendence.  
