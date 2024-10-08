@@ -1,4 +1,10 @@
-Title: Kelli's Notes for OCN 683
+---
+title: Kelli's Notes for OCN 683
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+---
 
 ###3A: GGPLOT ################
 Kelli Konicek 
@@ -874,6 +880,134 @@ round_date(datetimes, "minute") #round to nearest minute
 round_date(datetimes, "5 mins") #round to nearest FIVE minutes
 ```
 
+### 6A: R Markdown Intro 
+combo of text, code, and output 
+whatʻs inside? 
+metadata (own language)
+text (in markdown)
+code (r or python)
+output
+#Metadata: Yet Another Markup Language (YAML)
+---
+key: value
+---
+
+knitting: share things with collaborators
+
+
+you can decide whether or not to use the code in the ressults. 
+
+include= FALSE prevents the code AND results frome running 
+
+echo = FALSE: shows results NOT code
+
+message = FALSE: prevents messages generated
+
+warning = FALSE: won't show warnings with code
+
+fig.cap = "..." adds a caption to graphical results 
+#6B: RMARKDOWN 2
+
+make comments when you knit that will not be executed 
+
+<!-- This line is commented, won't show in document -->
+
+#Working with Figures
+in R markdown, you don't have to use ggsave- can automatically export and fix a figure using Rmarkdown 
+
+change the size in the r command chunk line.  
+here are some options: 
+
+
+i.e. {r, out.width="70%"}
+
+out.width="70%" makes it .7 of width 
+fig.width=3 (makes width 3 in)
+fig.height=4 (makes height 4 in)
+fig.asp.1.2 (changes aspect ratio to 1.2)
+fig.align ="center" 
+
+#automatically export figures into same output folder
+let's say you want to use one less line of code and just want them all exported to output file no matter what: 
+
+R chunks need to be named for this to work. 
+one figure per R chunk. 
+set the file path for your fig using: 
+
+fig.path(you can set this within the global settings)
+
+add a label, put it right next to the r in curly brackets 
+
+R automatically saves everything into the FILE directory. but HERE, it's going to use wherever you saved the markdown file as the reference point. 
+
+#automatically save all your figures to your output folder  
+
+cannot use the HERE package like we do with gg save have to put relative paths 
+
+
+
+fig.path = "../output/" 
+
+--- "../" 
+this sign means go up a directory-- so it's saying "go up from your scripts folder (where this markdown doc is) and go to the output folder to save figures
+
+you can do ../../ to keep going up directories
+
+#save your figure options in markdown 
+
+set a figure caption:
+
+fig.cap ="this is a caption for the image"
+if you just want to plot and not the code, set echo=FALSE
+
+save figure as a PDF instead of a PNG
+dev="pdf"
+
+#TABLES 
+type out tables by hand 
+
+|time | session | topic|
+|:---| :--------|------:|
+|_left_
+
+Okay this sucks. 
+
+tables with kable 
+
+install.packages("kabelExtra")
+
+#Make a KABLE TABLE 
+
+```{r kabletable}
+penguins %>%
+  group_by(species) %>%
+  summarise(bill_mean = mean(bill_length_mm, na.rm = TRUE)) %>%
+  kbl() %>%
+  kable_classic_2()%>%
+  row_spec(2, bold = T, color = "white",background = "red") %>%
+  kable_styling(full_width = FALSE)
+```
+
+gt tables is also a really good package and you can add in plots physically in the table 
+
+formattable
+
+dt is a SEARCHABLE TABLE OMG 
+
+can do a cool table as an indepentend project-- redo Karl's table as a searchable table? 
+
+#OUTPUTS 
+
+tons of outputs available too. you can make a github_document you can knit and view the html on githubt without pasting into the raw.githack package
+
+some of these options might not be an option depending on the output, you have to look at the YAML arguments 
+
+#help with YAML 
+
+ymlthis is the package
+can create yaml for different output packages 
+
+clock "toosl and then ADDINS then scroll to "write new RMarkdown on YAML file" 
 
 
 
