@@ -72,8 +72,8 @@ ggplot()+
                  y = latitude))+
   labs(title="Bigfoot sightings in Colorado",
        subtitle="SHOCKING trend revealed",
-       x= "Latitude",
-       y= "Longitutde")
+       x= "Longitude",
+       y= "Latitude")
 ```
 These results are *shocking*... unless you know something else about Colorado.  
 
@@ -102,8 +102,8 @@ site_map <- ggmap(get_stadiamap(bbox, maptype = "stamen_terrain_background", zoo
               theme_bw() +
              labs(title="Adding terrain to map of Colorado shows Bigfoot is real",
        subtitle="I will accept my Nobel prize through the mail, thank you",
-       x= "Latitude",
-       y= "Longitutde")
+       x= "Longitude",
+       y= "Latitude")
 #ggsave(here("week_07" , "output", "COterrain.png"), width = 11, height = 11) #I think I have screwed up rendering this into a smaller file? I am not sure how to do that with stadia maps yet. 
 site_map
 ```
