@@ -1,0 +1,114 @@
+---
+title: "07A_Homework: Make a map using tidy tuesday data"
+author: "kelli"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE,
+                      fig.path = "../output/")
+```
+
+# Set up
+## Load Libraries
+```{r libraries}
+library(tidyverse)
+library(here)
+library(maps)
+library(mapdata)
+library(mapproj)
+library(ggmap)
+
+```
+
+
+
+
+## Get Data 
+```{r data}
+bigfoot <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-09-13/bigfoot.csv')
+
+```
+
+# I'd like to take you on a short journey.
+
+I grew up in Colorado, and I wanted to know how often we get Bigfoot sightings as a state. 
+
+I found something that **blew the lid** off of Bigfoot in Colorado. 
+
+## Filter bigfoot data to Colorado sightings only 
+```{r}
+clean <- bigfoot %>%
+  filter(state == "Colorado")
+```
+
+## Map Colorado Bigfoot sightings onto a polygon. 
+```{r COpolygon, fig.cap= "You see this? DO YOU SEE THIS? The sightings *stop* as you got East."}
+states <- map_data("state")
+
+CO <- states %>%
+  filter(region == "colorado")
+ggplot()+
+  geom_polygon(data = CO, 
+               aes(x = long, 
+                   y = lat, 
+                   group = group),
+               color = "black",
+               fill = "beige")+
+  theme_minimal()+
+  guides(fill = FALSE)+
+  theme(panel.background = element_rect(fill = "brown"))+
+    coord_map(projection = "mercator",
+            xlim = c(-102.0438,-109.0625),
+            ylim = c(37, 41)) +
+  geom_point(data = clean, # add a point at all my sites
+             aes(x = longitude,
+                 y = latitude))+
+  labs(title="Bigfoot sightings in Colorado",
+       subtitle="SHOCKING trend revealed",
+       x= "Latitude",
+       y= "Longitutde")
+```
+These results are *shocking*... unless you know something else about Colorado.  
+
+
+
+### Colorado? It has mountains. And Plains. 
+
+
+
+I decided to investigate further to see if most bigfoot sightings occur in the mountains, as opposed to the plains area of Colorado. And WOW. What I found will ASTOUND YOU. 
+
+
+# UNDISSPUTED Proof of Big feet Populations
+
+I decided to use a terrain map that shows, roughly, where the Rocky Mountains begin in Colorado. For the layperson who isn't an R master and expert cartographer like myself, Green on map means mountain zone. 
+
+
+```{r COterrain, fig.cap= "Look at it! LOOK AT IT!"}
+bbox <- c(left = -109.0625, bottom = 37, right = -101, top = 41)
+
+site_map <- ggmap(get_stadiamap(bbox, maptype = "stamen_terrain_background", zoom = 7))+ #I got this from internet and it worked! Whee! 
+  geom_point(data = clean, aes(x = longitude, y = latitude), 
+               size = 1.5, color = "orange")+
+              geom_point(data = clean, aes(x = longitude, y = latitude), 
+               pch= 21, size = 2, color = "black")+ #outline helps show individual points
+              theme_bw() +
+             labs(title="Adding terrain to map of Colorado shows Bigfoot is real",
+       subtitle="I will accept my Nobel prize through the mail, thank you",
+       x= "Latitude",
+       y= "Longitutde")
+#ggsave(here("week_07" , "output", "COterrain.png"), width = 11, height = 11) #I think I have screwed up rendering this into a smaller file? I am not sure how to do that with stadia maps yet. 
+site_map
+```
+
+
+As you can see, The Bigfeeet reside mainly in the mountainous regions, probably _because it is more difficult to spot them._ They are *so smart* and *so real* that they know where the best habitat is to remain undetected. 
+
+### It is truly amazing how data can show us The Truth.
