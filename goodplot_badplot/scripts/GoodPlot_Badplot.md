@@ -21,8 +21,8 @@ library(beyonce)
 
 ### Tidy Tuesday Data: Let’s Compare Metorite Discoveries and BigFoot Sightings.
 
-Our class on maps made me interested if other kinds of detection data
-are skewed in Colorado because of the geography.
+Our class on maps made me wonder if other kinds of detection data are
+skewed in Colorado because of the geography.
 
 I decided to look at Bigfoot sightings *and* meteorite sightings.
 
