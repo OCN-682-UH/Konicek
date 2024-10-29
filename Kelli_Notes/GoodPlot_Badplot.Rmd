@@ -1,0 +1,117 @@
+---
+title: "GoodPlot_BadPlot"
+author: "kelli"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+
+#Load Libraries
+```{r}
+library(tidyverse)
+library(here)
+library(maps)
+library(mapdata)
+library(mapproj)
+library(ggmap)
+library(lubridate)
+library(geosphere)
+library(ggpubr)
+```
+
+
+
+
+#Get Data 
+```{r}
+meteorites <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-06-11/meteorites.csv")
+head(meteorites)
+
+bigfoot <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-09-13/bigfoot.csv')
+
+```
+
+#Clean up Meteorites
+```{r}
+cleanm <- meteorites %>%
+  filter(lat < 41.01805,
+       lat > 36.98442) %>%
+  filter(long < -102.0438,
+         long > -109.0625) %>%
+  select(year, lat, long) %>%
+  mutate(sighting = "Meteorite") %>%
+  rename(latitude = lat, longitude= long) %>%
+  unite(col = "Geopoint", #NEW column
+        c(longitude,latitude), #existing columns to unite
+        sep = ",", #separating symbol 
+        remove = FALSE) #DO NOT delete the original columns
+```
+
+
+# Clean up Bigfoot
+```{r}
+bigfoot$year <- year(ymd(bigfoot$date)) #extract the year using lubridate
+cleanb <- bigfoot %>%
+  filter(state == "Colorado")%>%
+  select(latitude,longitude,year) %>%
+  drop_na(latitude) %>%
+  mutate(sighting = "Bigfoot") %>%
+  unite(col = "Geopoint", #NEW column
+        c(longitude,latitude), #existing columns to unite
+        sep = ",", #separating symbol 
+        remove = FALSE) #DO NOT delete the original columns
+
+```
+
+#Join Datasets
+```{r}
+points <- full_join(cleanb,cleanm)
+points %>%
+  mutate(points, ID = row_number())
+```
+
+
+#Bad Plot 
+```{r}
+ggplot(data=points,
+               aes(x= longitude,
+                   y= latitude, color = sighting)) +
+  geom_rug() +
+
+  footpic <- image_read("https://www.fortmorgantimes.com/wp-content/uploads/2023/12/thinkstockphotos-152533219.jpg?w=1575") 
+```
+```
+
+
+
+# Good Plot 
+```{r}
+bbox <- c(left = -109.2, bottom = 36.7, right = -101.9, top = 41.1)
+
+site_map <- ggmap(get_stadiamap(bbox, maptype = "stamen_terrain_background", zoom = 7))+ 
+  geom_point(data = cleanb, aes(x = longitude, y = latitude), 
+               size = 1.5, color = "orange")+
+              geom_point(data = cleanb, aes(x = longitude, y = latitude), 
+               pch= 21, size = 2, color = "black")+
+    geom_point(data = cleanm, aes(x = longitude, y = latitude), 
+               size = 1.5, color = "blue")+
+              geom_point(data = cleanm, aes(x = longitude, y = latitude), 
+               pch= 21, size = 2, color = "black")+
+              theme_bw() +
+             labs(title="Bigfeet Avoid Meteorites!!!!!",
+       subtitle="I will accept my Nobel prize through the mail, thank you",
+       x= "Longitude",
+       y= "Latitude")
+#ggsave(here("week_07" , "output", "COterrain.png"), width = 11, height = 11) #I think I have screwed up rendering this into a smaller file? I am not sure how to do that with stadia maps yet. 
+site_map
+```
+
