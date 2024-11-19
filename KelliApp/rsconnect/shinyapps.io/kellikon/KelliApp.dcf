@@ -1,0 +1,13 @@
+name: KelliApp
+title: KelliApp
+username: kellikon
+account: kellikon
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13382855
+bundleId: 9385050
+url: https://kellikon.shinyapps.io/KelliApp/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: monster.csv
