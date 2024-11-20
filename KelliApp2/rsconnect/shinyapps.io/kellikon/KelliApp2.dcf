@@ -1,0 +1,13 @@
+name: KelliApp2
+title: KelliApp2
+username:
+account: kellikon
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13395277
+bundleId: 9389024
+url: https://kellikon.shinyapps.io/KelliApp2/
+when: 1732063885.09847
+lastSyncTime: 1732063885.09849
+asMultiple: FALSE
+asStatic: FALSE
