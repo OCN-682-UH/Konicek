@@ -1,0 +1,43 @@
+---
+title: "tuesday_04_burders"
+author: "kelli"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+## libraries
+```{r}
+library(tidyverse)
+library(tidyplots)
+```
+
+
+The new package I learned this week is tidyplots! Thank you for the last minute shout-out, Dr. Silbiger. 
+
+## read in data
+```{r}
+episode_metrics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-11-19/episode_metrics.csv')
+
+```
+
+```{r plot,out.width="400%",fig.path = "../output/" }
+episode_metrics %>%
+  tidyplot(x = episode, y = season, color = exclamation_ratio) %>%
+  add_heatmap() +
+    scale_x_continuous(breaks = c(1:23),) +
+  scale_y_continuous(breaks = c(1:14)) +
+  labs(title = "Characters get quieter in Bob's Burgers", caption ="Bob's Burgers goes to a whimper from a bang, according to exclamation point use per episode. Season 8, episode 7 is a Christmas Special lumped with Season 8, episode 6. We were all wondering.", guide_legend("exclamation point ratio per episode"))
+```
+
+  scale_x_continuous(breaks = c(1:23),) +
+  scale_y_continuous(breaks = c(1:14))
+  
+ pivot_longer(cols = dialogue_density, unique_words, #columns you want to pivot
+               names_to = "Variables", #names of new columns with all the variables
+               values_to = "Values") %>% #name of the new column with all the values)
