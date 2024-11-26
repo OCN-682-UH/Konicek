@@ -2,7 +2,7 @@
 title: "tuesday_04_burders"
 author: "kelli"
 date: "`r Sys.Date()`"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -32,12 +32,5 @@ episode_metrics %>%
   add_heatmap() +
     scale_x_continuous(breaks = c(1:23),) +
   scale_y_continuous(breaks = c(1:14)) +
-  labs(title = "Characters get quieter in Bob's Burgers", caption ="Bob's Burgers goes to a whimper from a bang, according to exclamation point use per episode. Season 8, episode 7 is a Christmas Special lumped with Season 8, episode 6. We were all wondering.", guide_legend("exclamation point ratio per episode"))
+  labs(title = "Dialouge gets quieter in Bob's Burgers", caption ="Season 8, episode 7 is a Christmas Special, if you were curious.", guide_legend("exclamation point ratio per episode"))
 ```
-
-  scale_x_continuous(breaks = c(1:23),) +
-  scale_y_continuous(breaks = c(1:14))
-  
- pivot_longer(cols = dialogue_density, unique_words, #columns you want to pivot
-               names_to = "Variables", #names of new columns with all the variables
-               values_to = "Values") %>% #name of the new column with all the values)
