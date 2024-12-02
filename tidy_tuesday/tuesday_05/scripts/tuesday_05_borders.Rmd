@@ -70,9 +70,14 @@ I'm interested to see if all the border offices have increased apprehension numb
 categories <- unique(cbp_resp$area_of_responsibility) 
 categories
 ```
-Ugh, that's quite a lot of offices. Let's jsut focus on the Southwest, since they have, by far, the most apprehensions.
+Ugh, that's quite a lot of offices. 
 
-In addition, I'd like to see if more single adults are apprehended, since I've heard tell from people on TV that people STREAMING over the border are all the "BAD ONES" and not families. I will make a little graphic showing columns of apprehended folks by office, and then a breakdown of their demographic status (Families (FMUA), Single adults, Unaccompanied Children, or Accompanied Children). 
+Let's just focus on the Southwest, since they have, by far, the most apprehensions.
+
+
+# Second Plot
+
+I'd like to see if more single adults are apprehended, since I've heard tell from people on TV that people STREAMING over the border are all the "BAD ONES" and not families. I will make a little graphic showing columns of apprehended folks by office, and then a breakdown of their demographic status (Families (FMUA), Single adults, Unaccompanied Children, or Accompanied Children). 
 
 
 ```{r}
