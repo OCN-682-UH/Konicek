@@ -106,15 +106,19 @@ categories
     ## [39] "Havre Sector"               "New Orleans Sector"        
     ## [41] "Ramey Sector"
 
-Ugh, that’s quite a lot of offices. Let’s jsut focus on the Southwest,
-since they have, by far, the most apprehensions.
+Ugh, that’s quite a lot of offices.
 
-In addition, I’d like to see if more single adults are apprehended,
-since I’ve heard tell from people on TV that people STREAMING over the
-border are all the “BAD ONES” and not families. I will make a little
-graphic showing columns of apprehended folks by office, and then a
-breakdown of their demographic status (Families (FMUA), Single adults,
-Unaccompanied Children, or Accompanied Children).
+Let’s just focus on the Southwest, since they have, by far, the most
+apprehensions.
+
+# Second Plot
+
+I’d like to see if more single adults are apprehended, since I’ve heard
+tell from people on TV that people STREAMING over the border are all the
+“BAD ONES” and not families. I will make a little graphic showing
+columns of apprehended folks by office, and then a breakdown of their
+demographic status (Families (FMUA), Single adults, Unaccompanied
+Children, or Accompanied Children).
 
 ``` r
 filtered_data <- cbp_resp %>%
@@ -190,6 +194,3 @@ office for apprehension efforts.
     learned how to animate via chunk options
 2.  learned how to resize the legends in a plot
 3.  used the unique function to list out unique variables in a column
-
-Note that the `echo = FALSE` parameter was added to the code chunk to
-prevent printing of the R code that generated the plot.
