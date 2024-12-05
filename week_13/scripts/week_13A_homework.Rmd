@@ -1,7 +1,13 @@
 ---
 title: "week_13A_homework"
-output:
-  github_document
+author: "kelli"
+date: "`r Sys.Date()`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 # Libraries
 
