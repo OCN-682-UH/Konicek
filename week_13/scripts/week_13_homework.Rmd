@@ -1,7 +1,7 @@
 ---
 title: "week_13A_homework"
 output:
-  github_document:
+  github_document
 
 # Libraries
 
